@@ -25,6 +25,6 @@ Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'
 Route::get('/products/{product}', [\App\Http\Controllers\ProductController::class, 'show']);
 
 Route::group(['prefix'=>'products'], function(){
-    Route::apiResource('/{product}/reviews','ReviewController');
+    Route::get('/{product}/reviews', [\App\Http\Controllers\ReviewController::class, 'index']);
 });
 
