@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\StoreProductRequest;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-
+use Symfony\Component\HttpFoundation\Response;
+use Log;
 class ProductController extends Controller
 {
     /**
@@ -14,6 +17,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct(){
+        $this->middleware('auth:api')->except('index','show');
+     }
+
+
     public function index()
     {
         //
@@ -40,6 +49,26 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         //
+        $product = new Product;
+        $product->name = $request->name;
+        $product->detail = $request->description;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->discount = $request->discount;
+        Log::info($product);
+        $temp = $product->save();
+        if($temp) {
+            return response([
+                'data' => new ProductResource($product)
+            ],Response::HTTP_CREATED);
+          
+        }
+        else{
+            return response([
+                'data' => []
+            ],Response::HTTP_ALREADY_REPORTED);
+        }
+   
     }
 
     /**

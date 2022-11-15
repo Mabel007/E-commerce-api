@@ -23,6 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index']);
 Route::get('/products/{product}', [\App\Http\Controllers\ProductController::class, 'show']);
+Route::POST('/products', [\App\Http\Controllers\ProductController::class, 'store']);
 
 Route::group(['prefix'=>'products'], function(){
     Route::get('/{product}/reviews', [\App\Http\Controllers\ReviewController::class, 'index']);
